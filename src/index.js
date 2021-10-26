@@ -368,14 +368,18 @@ function parse(src) {
 
 	const user = match[4];
 	const name = match[5].replace(/\.git$/, '');
-	const subdir = match[6];
+	let subdir = match[6];
 	const ref = match[7] || 'HEAD';
 
 	const domain = `${siteName}${tld || supported[siteName] || supported[site] || ''}`
 
-	const url = `https://${domain}/${user}/${name}`;
-	const ssh = `git@${domain}:${user}/${name}`;
-
+  const url = `https://${domain}/${user}/${name}`;
+  let ssh = `git@${domain}:${user}/${name}`;
+  // TODO fix this dirty hack. Might break in the future
+  if (domain == "git.code.sf.net") {
+    ssh = `https://${domain}/${user}/${name}/${subdir}`;
+    subdir = null;
+  }
 	const mode = supported[siteName] || supported[site] ? 'tar' : 'git';
 
 	return { site: siteName, user, name, ref, url, ssh, subdir, mode };
