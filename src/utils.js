@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import homeOrTmp from 'home-or-tmp';
 import https from 'https';
-import child_process from 'child_process';
 import URL from 'url';
 import Agent from 'https-proxy-agent';
 import { copydirSync } from 'sander';
 import rimraf from "rimraf"
+import shell from 'shelljs';
 
 const tmpDirName = 'tmp';
 const degitConfigName = 'degit.json';
@@ -34,16 +34,7 @@ export function tryRequire(file, opts) {
 }
 
 export function exec(command) {
-	return new Promise((fulfil, reject) => {
-		child_process.exec(command, (err, stdout, stderr) => {
-			if (err) {
-				reject(err);
-				return;
-			}
-
-			fulfil({ stdout, stderr });
-		});
-	});
+	return shell.exec(command);
 }
 
 export function mkdirp(dir) {

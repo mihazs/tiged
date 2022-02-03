@@ -16,6 +16,7 @@ import {
 	base
 } from './utils.js';
 
+
 const validModes = new Set(['tar', 'git']);
 
 export default function degit(src, opts) {
